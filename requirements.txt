@@ -1,0 +1,17 @@
+aiogram==3.10.0
+google-genai==0.3.0
+google-cloud-speech
+gspread==5.11.0
+google-auth-oauthlib
+sqlalchemy==2.0.23
+APScheduler==3.10.4
+python-dotenv==1.0.0
+pydub==0.25.1
+twilio==9.0.0
+alembic
+tenacity
+backoff
+pydantic==2.8.2
+httpx
+aiohttp
+loguru
