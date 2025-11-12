@@ -15,6 +15,7 @@ class Settings(BaseSettings):
         "SERVICE_ACCOUNT_JSON_PATH", "service_account.json"
     )
     google_sheets_id: Optional[str] = os.getenv("GOOGLE_SHEETS_ID")
+    gemini_api_key: Optional[str] = os.getenv("GEMINI_API_KEY")
 
 
 settings = Settings()
