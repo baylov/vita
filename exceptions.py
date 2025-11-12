@@ -38,3 +38,15 @@ class ConflictError(ApplicationError):
     """Raised when a conflict is detected during sync."""
 
     pass
+
+
+class GeminiError(ApplicationError):
+    """Raised when a Gemini AI service operation fails."""
+
+    pass
+
+
+class GeminiInitializationError(GeminiError):
+    """Raised when Gemini client initialization fails."""
+
+    pass
