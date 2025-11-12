@@ -3,7 +3,10 @@
 import sys
 from pathlib import Path
 
-import pytest_asyncio
+try:
+    import pytest_asyncio
+except ImportError:
+    pytest_asyncio = None
 
 # Add project root to Python path
 project_root = Path(__file__).parent.parent

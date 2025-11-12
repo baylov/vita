@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     )
     google_sheets_id: Optional[str] = os.getenv("GOOGLE_SHEETS_ID")
     gemini_api_key: Optional[str] = os.getenv("GEMINI_API_KEY")
+    google_cloud_credentials_path: Optional[str] = os.getenv(
+        "GOOGLE_APPLICATION_CREDENTIALS", "service_account.json"
+    )
+    transcription_timeout: int = int(os.getenv("TRANSCRIPTION_TIMEOUT", "60"))
 
 
 settings = Settings()
