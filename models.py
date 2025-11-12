@@ -98,3 +98,16 @@ class SyncState(BaseModel):
     items_pushed: int = 0
     items_pulled: int = 0
     errors: list[str] = Field(default_factory=list)
+
+
+class UserSession(BaseModel):
+    """Data transfer object for user session data."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: Optional[int] = None
+    user_id: int
+    telegram_username: Optional[str] = None
+    language_preference: str = "ru"
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None

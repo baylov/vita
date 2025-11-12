@@ -11,7 +11,8 @@ A robust bi-directional synchronization manager for Google Sheets integration wi
 - **Error Handling**: Custom exceptions and comprehensive error logging
 - **Audit Logging**: Track all administrative actions and errors
 - **Type Safety**: Full type hints with Pydantic models
-- **Comprehensive Tests**: Mocked tests covering initialization, retries, and sync flows
+- **Internationalization (i18n)**: Full Russian and Kazakh language support for user-facing text
+- **Comprehensive Tests**: Mocked tests covering initialization, retries, sync flows, and i18n
 
 ## Installation
 
@@ -149,6 +150,37 @@ pytest -v  # Verbose output
 pytest tests/test_sheets_manager.py -v  # Specific test file
 ```
 
+## Internationalization (i18n)
+
+The system supports Russian and Kazakh languages for all user-facing text:
+
+```python
+from core.i18n import get_text, detect_language
+
+# Detect user's language
+language = detect_language(
+    telegram_locale="kk",  # Telegram language code
+    user_preference="kz"   # Stored user preference
+)
+
+# Get localized text
+greeting = get_text("greetings.hello", language, name="Иван")
+# Russian: "Здравствуйте, Иван!"
+# Kazakh: "Сәлеметсіз бе, Иван!"
+
+# Get booking confirmation
+confirmation = get_text(
+    "confirmations.booking_created",
+    language,
+    specialist="Доктор Иванов",
+    date="2025-01-15",
+    time="10:00",
+    duration=60
+)
+```
+
+See [core/README.md](core/README.md) for full i18n documentation.
+
 ## Data Models
 
 All data is transferred using Pydantic models for type safety:
@@ -160,14 +192,18 @@ All data is transferred using Pydantic models for type safety:
 - `AdminActionDTO`: Administrative action log
 - `ErrorLogDTO`: Error log entry
 - `SyncState`: Sync operation state
+- `UserSession`: User session with language preference
 
 ## Architecture
 
 - **settings.py**: Configuration management
 - **models.py**: Pydantic data models and DTOs
 - **exceptions.py**: Custom exception classes
+- **core/i18n.py**: Internationalization module
+- **locales/**: Translation files (ru.json, kz.json)
 - **integrations/google/sheets_manager.py**: Main manager implementation
-- **tests/test_sheets_manager.py**: Comprehensive test suite
+- **tests/test_sheets_manager.py**: Sheets manager test suite
+- **tests/test_i18n.py**: i18n test suite
 
 ## Logging
 

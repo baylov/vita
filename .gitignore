@@ -132,6 +132,8 @@ dmypy.json
 # Service account files
 service_account.json
 *.json
+# Allow locale files
+!locales/*.json
 
 # OS
 .DS_Store
