@@ -12,21 +12,52 @@ A robust bi-directional synchronization manager for Google Sheets integration wi
 - **Audit Logging**: Track all administrative actions and errors
 - **Type Safety**: Full type hints with Pydantic models
 - **Internationalization (i18n)**: Full Russian and Kazakh language support for user-facing text
+- **Audio Pipeline**: Speech-to-text support for RU/KZ voice messages with automatic format conversion
 - **Comprehensive Tests**: Mocked tests covering initialization, retries, sync flows, and i18n
 
 ## Installation
 
+### Python Dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
+
+### System Dependencies
+
+The audio pipeline requires **ffmpeg** to be installed on your system for audio format conversion:
+
+**Ubuntu/Debian:**
+```bash
+sudo apt-get update
+sudo apt-get install ffmpeg
+```
+
+**macOS:**
+```bash
+brew install ffmpeg
+```
+
+**Windows:**
+Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to PATH.
+
+**Note:** Audio features (voice message transcription) will be unavailable without ffmpeg.
 
 ## Configuration
 
 Set the following environment variables or create a `.env` file:
 
 ```env
+# Google Sheets Integration
 SERVICE_ACCOUNT_JSON_PATH=/path/to/service_account.json
 GOOGLE_SHEETS_ID=your_spreadsheet_id
+
+# Gemini AI (optional)
+GEMINI_API_KEY=your_gemini_api_key
+
+# Audio Pipeline (optional)
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/service_account.json
+TRANSCRIPTION_TIMEOUT=60
 ```
 
 ## Usage
@@ -181,6 +212,98 @@ confirmation = get_text(
 
 See [core/README.md](core/README.md) for full i18n documentation.
 
+## Audio Pipeline
+
+The audio pipeline provides speech-to-text transcription for voice messages in Russian and Kazakh:
+
+### Basic Usage
+
+```python
+from services.audio.pipeline import AudioPipeline
+
+# Initialize pipeline
+pipeline = AudioPipeline()
+
+# Check if available
+if pipeline.is_available():
+    # Process voice message
+    transcript = pipeline.process_voice_message(
+        audio_file_path="/path/to/voice.oga",
+        language="ru",  # or "kz" for Kazakh
+        cleanup=True,   # Cleanup temporary files
+    )
+    
+    if transcript:
+        print(f"Transcription: {transcript}")
+    else:
+        print("Transcription failed, use manual mode")
+```
+
+### Converter Only
+
+```python
+from services.audio.converter import convert_audio
+
+# Convert audio to WAV format
+wav_path = convert_audio("/path/to/voice.oga")
+
+if wav_path:
+    print(f"Converted: {wav_path}")
+    # Remember to cleanup
+    from services.audio.converter import AudioConverter
+    AudioConverter.cleanup_temp_file(wav_path)
+```
+
+### Transcriber Only
+
+```python
+from services.audio.transcriber import transcribe_audio
+
+# Transcribe pre-converted WAV file
+transcript = transcribe_audio(
+    audio_file_path="/path/to/audio.wav",
+    language="kz",
+)
+
+if transcript:
+    print(f"Transcript: {transcript}")
+```
+
+### With Error Logging to Sheets
+
+```python
+from services.audio.pipeline import AudioPipeline
+from integrations.google.sheets_manager import GoogleSheetsManager
+
+# Initialize sheets manager
+sheets = GoogleSheetsManager(spreadsheet_id="your_id")
+
+# Create pipeline with error logging
+pipeline = AudioPipeline(
+    error_logger=sheets._log_error
+)
+
+# Process with automatic error logging
+transcript = pipeline.process_voice_message(
+    audio_file_path="/path/to/voice.m4a",
+    language="ru",
+)
+```
+
+### Supported Formats
+
+- **Telegram**: `.oga`, `.ogg`
+- **WhatsApp**: `.m4a`
+- **General**: `.mp3`, `.wav`
+
+All formats are converted to 16kHz mono PCM WAV for optimal speech recognition.
+
+### Language Support
+
+- `ru`: Russian (Google Cloud: `ru-RU`)
+- `kz`: Kazakh (Google Cloud: `ru-KZ`)
+- `kk`: Kazakh alternative (Google Cloud: `ru-KZ`)
+
 ## Data Models
 
 All data is transferred using Pydantic models for type safety:
@@ -200,10 +323,20 @@ All data is transferred using Pydantic models for type safety:
 - **models.py**: Pydantic data models and DTOs
 - **exceptions.py**: Custom exception classes
 - **core/i18n.py**: Internationalization module
+- **core/conversation.py**: Conversation FSM and context management
 - **locales/**: Translation files (ru.json, kz.json)
 - **integrations/google/sheets_manager.py**: Main manager implementation
-- **tests/test_sheets_manager.py**: Sheets manager test suite
-- **tests/test_i18n.py**: i18n test suite
+- **services/gemini/**: AI-powered request analysis (client.py, analyzer.py)
+- **services/audio/**: Audio processing pipeline
+  - **converter.py**: Audio format conversion (pydub/ffmpeg)
+  - **transcriber.py**: Speech-to-text (Google Cloud Speech-to-Text)
+  - **pipeline.py**: Complete processing pipeline with error logging
+- **tests/**: Comprehensive test suites
+  - **test_sheets_manager.py**: Sheets manager tests
+  - **test_i18n.py**: Internationalization tests
+  - **test_conversation.py**: Conversation FSM tests
+  - **test_gemini_*.py**: Gemini AI service tests
+  - **test_audio_*.py**: Audio pipeline tests
 
 ## Logging
 

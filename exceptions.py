@@ -50,3 +50,21 @@ class GeminiInitializationError(GeminiError):
     """Raised when Gemini client initialization fails."""
 
     pass
+
+
+class AudioError(ApplicationError):
+    """Raised when an audio processing operation fails."""
+
+    pass
+
+
+class AudioConversionError(AudioError):
+    """Raised when audio format conversion fails."""
+
+    pass
+
+
+class TranscriptionError(AudioError):
+    """Raised when speech-to-text transcription fails."""
+
+    pass
