@@ -2,7 +2,7 @@
 
 import asyncio
 from aiogram import Bot
-from integrations.platform import (
+from integrations.platform_handlers import (
     Message,
     MessageType,
     TelegramAdapter,

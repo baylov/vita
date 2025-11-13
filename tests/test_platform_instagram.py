@@ -5,8 +5,8 @@ import hmac
 import hashlib
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from integrations.platform.instagram import InstagramAdapter
-from integrations.platform.base import Message, MessageType, WebhookValidationError
+from integrations.platform_handlers.instagram import InstagramAdapter
+from integrations.platform_handlers.base import Message, MessageType, WebhookValidationError
 
 
 @pytest.fixture

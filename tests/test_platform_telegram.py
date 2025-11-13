@@ -7,8 +7,8 @@ from datetime import datetime, timezone
 from aiogram import Bot
 from aiogram.types import Update, Message as AiogramMessage, User, Chat, CallbackQuery
 
-from integrations.platform.telegram import TelegramAdapter
-from integrations.platform.base import Message, MessageType
+from integrations.platform_handlers.telegram import TelegramAdapter
+from integrations.platform_handlers.base import Message, MessageType
 
 
 @pytest.fixture

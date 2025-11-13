@@ -4,7 +4,7 @@ import logging
 from typing import Optional, Dict, Callable, Awaitable
 from datetime import datetime, timezone
 
-from integrations.platform.base import Message, PlatformAdapter
+from integrations.platform_handlers.base import Message, PlatformAdapter
 from core.conversation import get_storage, ConversationContext, ConversationState
 from core.i18n import detect_language
 
