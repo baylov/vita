@@ -12,3 +12,4 @@ google-cloud-speech>=2.21.0
 apscheduler>=3.10.0
 aiogram>=3.0.0
 httpx>=0.24.0
+sqlalchemy>=2.0.0
