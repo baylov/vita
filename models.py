@@ -111,3 +111,26 @@ class UserSession(BaseModel):
     language_preference: str = "ru"
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
+
+
+class NotificationLogDTO(BaseModel):
+    """Data transfer object for notification logs."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: Optional[int] = None
+    recipient_id: int
+    recipient_type: str  # specialist, admin, client
+    channel: str  # telegram, whatsapp, instagram
+    message_type: str  # immediate, urgent, digest
+    urgency_level: str = "normal"  # immediate, urgent, normal
+    subject: str
+    message_preview: str
+    delivery_status: str = "pending"  # pending, sent, failed, retrying
+    retry_count: int = 0
+    related_booking_id: Optional[int] = None
+    related_complaint_id: Optional[int] = None
+    error_details: Optional[str] = None
+    sent_at: Optional[datetime] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
