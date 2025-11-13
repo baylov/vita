@@ -26,6 +26,22 @@ class ConversationState(str, Enum):
     DONE = "DONE"
     ADMIN_MENU = "ADMIN_MENU"
     ERROR_FALLBACK = "ERROR_FALLBACK"
+    
+    # Admin flow states
+    ADMIN_ADD_SPECIALIST_NAME = "ADMIN_ADD_SPECIALIST_NAME"
+    ADMIN_ADD_SPECIALIST_SPECIALIZATION = "ADMIN_ADD_SPECIALIST_SPECIALIZATION"
+    ADMIN_ADD_SPECIALIST_PHONE = "ADMIN_ADD_SPECIALIST_PHONE"
+    ADMIN_ADD_SPECIALIST_EMAIL = "ADMIN_ADD_SPECIALIST_EMAIL"
+    ADMIN_ADD_SPECIALIST_CONFIRM = "ADMIN_ADD_SPECIALIST_CONFIRM"
+    ADMIN_EDIT_SPECIALIST_SELECT = "ADMIN_EDIT_SPECIALIST_SELECT"
+    ADMIN_EDIT_SPECIALIST_FIELD = "ADMIN_EDIT_SPECIALIST_FIELD"
+    ADMIN_EDIT_SPECIALIST_VALUE = "ADMIN_EDIT_SPECIALIST_VALUE"
+    ADMIN_DELETE_SPECIALIST_SELECT = "ADMIN_DELETE_SPECIALIST_SELECT"
+    ADMIN_DELETE_SPECIALIST_CONFIRM = "ADMIN_DELETE_SPECIALIST_CONFIRM"
+    ADMIN_SET_DAY_OFF_SPECIALIST = "ADMIN_SET_DAY_OFF_SPECIALIST"
+    ADMIN_SET_DAY_OFF_DATE = "ADMIN_SET_DAY_OFF_DATE"
+    ADMIN_SET_DAY_OFF_REASON = "ADMIN_SET_DAY_OFF_REASON"
+    ADMIN_SET_DAY_OFF_CONFIRM = "ADMIN_SET_DAY_OFF_CONFIRM"
 
 
 class CollectedInfo(BaseModel):
@@ -312,6 +328,76 @@ class ConversationStorage:
             ],
             ConversationState.ADMIN_MENU: [
                 ConversationState.START,
+                ConversationState.ADMIN_ADD_SPECIALIST_NAME,
+                ConversationState.ADMIN_EDIT_SPECIALIST_SELECT,
+                ConversationState.ADMIN_DELETE_SPECIALIST_SELECT,
+                ConversationState.ADMIN_SET_DAY_OFF_SPECIALIST,
+                ConversationState.ERROR_FALLBACK,
+            ],
+            ConversationState.ADMIN_ADD_SPECIALIST_NAME: [
+                ConversationState.ADMIN_ADD_SPECIALIST_SPECIALIZATION,
+                ConversationState.ADMIN_MENU,
+                ConversationState.ERROR_FALLBACK,
+            ],
+            ConversationState.ADMIN_ADD_SPECIALIST_SPECIALIZATION: [
+                ConversationState.ADMIN_ADD_SPECIALIST_PHONE,
+                ConversationState.ADMIN_MENU,
+                ConversationState.ERROR_FALLBACK,
+            ],
+            ConversationState.ADMIN_ADD_SPECIALIST_PHONE: [
+                ConversationState.ADMIN_ADD_SPECIALIST_EMAIL,
+                ConversationState.ADMIN_MENU,
+                ConversationState.ERROR_FALLBACK,
+            ],
+            ConversationState.ADMIN_ADD_SPECIALIST_EMAIL: [
+                ConversationState.ADMIN_ADD_SPECIALIST_CONFIRM,
+                ConversationState.ADMIN_MENU,
+                ConversationState.ERROR_FALLBACK,
+            ],
+            ConversationState.ADMIN_ADD_SPECIALIST_CONFIRM: [
+                ConversationState.ADMIN_MENU,
+                ConversationState.ERROR_FALLBACK,
+            ],
+            ConversationState.ADMIN_EDIT_SPECIALIST_SELECT: [
+                ConversationState.ADMIN_EDIT_SPECIALIST_FIELD,
+                ConversationState.ADMIN_MENU,
+                ConversationState.ERROR_FALLBACK,
+            ],
+            ConversationState.ADMIN_EDIT_SPECIALIST_FIELD: [
+                ConversationState.ADMIN_EDIT_SPECIALIST_VALUE,
+                ConversationState.ADMIN_MENU,
+                ConversationState.ERROR_FALLBACK,
+            ],
+            ConversationState.ADMIN_EDIT_SPECIALIST_VALUE: [
+                ConversationState.ADMIN_MENU,
+                ConversationState.ERROR_FALLBACK,
+            ],
+            ConversationState.ADMIN_DELETE_SPECIALIST_SELECT: [
+                ConversationState.ADMIN_DELETE_SPECIALIST_CONFIRM,
+                ConversationState.ADMIN_MENU,
+                ConversationState.ERROR_FALLBACK,
+            ],
+            ConversationState.ADMIN_DELETE_SPECIALIST_CONFIRM: [
+                ConversationState.ADMIN_MENU,
+                ConversationState.ERROR_FALLBACK,
+            ],
+            ConversationState.ADMIN_SET_DAY_OFF_SPECIALIST: [
+                ConversationState.ADMIN_SET_DAY_OFF_DATE,
+                ConversationState.ADMIN_MENU,
+                ConversationState.ERROR_FALLBACK,
+            ],
+            ConversationState.ADMIN_SET_DAY_OFF_DATE: [
+                ConversationState.ADMIN_SET_DAY_OFF_REASON,
+                ConversationState.ADMIN_MENU,
+                ConversationState.ERROR_FALLBACK,
+            ],
+            ConversationState.ADMIN_SET_DAY_OFF_REASON: [
+                ConversationState.ADMIN_SET_DAY_OFF_CONFIRM,
+                ConversationState.ADMIN_MENU,
+                ConversationState.ERROR_FALLBACK,
+            ],
+            ConversationState.ADMIN_SET_DAY_OFF_CONFIRM: [
+                ConversationState.ADMIN_MENU,
                 ConversationState.ERROR_FALLBACK,
             ],
             ConversationState.ERROR_FALLBACK: [
