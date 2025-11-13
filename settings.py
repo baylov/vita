@@ -20,6 +20,15 @@ class Settings(BaseSettings):
         "GOOGLE_APPLICATION_CREDENTIALS", "service_account.json"
     )
     transcription_timeout: int = int(os.getenv("TRANSCRIPTION_TIMEOUT", "60"))
+    notification_retry_attempts: int = int(os.getenv("NOTIFICATION_RETRY_ATTEMPTS", "3"))
+    notification_retry_delay_min: int = int(
+        os.getenv("NOTIFICATION_RETRY_DELAY_MIN", "2")
+    )
+    notification_retry_delay_max: int = int(
+        os.getenv("NOTIFICATION_RETRY_DELAY_MAX", "10")
+    )
+    digest_schedule_hour: int = int(os.getenv("DIGEST_SCHEDULE_HOUR", "8"))
+    digest_schedule_minute: int = int(os.getenv("DIGEST_SCHEDULE_MINUTE", "0"))
 
 
 settings = Settings()
