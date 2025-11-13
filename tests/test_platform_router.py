@@ -4,8 +4,8 @@ import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 from datetime import datetime, timezone
 
-from integrations.platform.router import MessageRouter
-from integrations.platform.base import Message, MessageType, PlatformAdapter
+from integrations.platform_handlers.router import MessageRouter
+from integrations.platform_handlers.base import Message, MessageType, PlatformAdapter
 from core.conversation import ConversationState, get_storage, reset_storage
 
 

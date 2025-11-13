@@ -10,7 +10,7 @@ from urllib.parse import urlencode
 import httpx
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
-from integrations.platform.base import (
+from integrations.platform_handlers.base import (
     PlatformAdapter,
     Message,
     MessageType,

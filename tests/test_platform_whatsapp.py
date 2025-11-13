@@ -6,8 +6,8 @@ import hmac
 import hashlib
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from integrations.platform.whatsapp import WhatsAppAdapter
-from integrations.platform.base import Message, MessageType, WebhookValidationError
+from integrations.platform_handlers.whatsapp import WhatsAppAdapter
+from integrations.platform_handlers.base import Message, MessageType, WebhookValidationError
 
 
 @pytest.fixture
