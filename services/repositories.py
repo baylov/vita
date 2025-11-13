@@ -263,7 +263,7 @@ class ScheduleRepository(BaseRepository):
             List of schedules
         """
         try:
-            schedules = self.sheets_manager.read_schedules()
+            schedules = self.sheets_manager.read_schedule()
             return [s for s in schedules if s.specialist_id == specialist_id]
         except Exception as e:
             logger.error(f"Failed to get schedules: {e}")
@@ -277,7 +277,7 @@ class ScheduleRepository(BaseRepository):
             List of all schedules
         """
         try:
-            return self.sheets_manager.read_schedules()
+            return self.sheets_manager.read_schedule()
         except Exception as e:
             logger.error(f"Failed to get all schedules: {e}")
             return []
