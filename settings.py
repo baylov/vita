@@ -30,6 +30,15 @@ class Settings(BaseSettings):
     digest_schedule_hour: int = int(os.getenv("DIGEST_SCHEDULE_HOUR", "8"))
     digest_schedule_minute: int = int(os.getenv("DIGEST_SCHEDULE_MINUTE", "0"))
     admin_ids: list[int] = []
+    
+    # Platform adapter settings
+    telegram_bot_token: Optional[str] = os.getenv("TELEGRAM_BOT_TOKEN")
+    whatsapp_account_sid: Optional[str] = os.getenv("WHATSAPP_ACCOUNT_SID")
+    whatsapp_auth_token: Optional[str] = os.getenv("WHATSAPP_AUTH_TOKEN")
+    whatsapp_from_number: Optional[str] = os.getenv("WHATSAPP_FROM_NUMBER")
+    instagram_page_access_token: Optional[str] = os.getenv("INSTAGRAM_PAGE_ACCESS_TOKEN")
+    instagram_app_secret: Optional[str] = os.getenv("INSTAGRAM_APP_SECRET")
+    instagram_verify_token: Optional[str] = os.getenv("INSTAGRAM_VERIFY_TOKEN")
 
     def __init__(self, **data):
         super().__init__(**data)
