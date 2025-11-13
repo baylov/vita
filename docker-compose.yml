@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # Main Telegram Bot Service
+  bot:
+    build: .
+    container_name: vita-bot
+    environment:
+      # Load from .env file or override here
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - GOOGLE_SHEETS_ID=${GOOGLE_SHEETS_ID}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ADMIN_IDS=${ADMIN_IDS}
+      - WHATSAPP_ACCOUNT_SID=${WHATSAPP_ACCOUNT_SID}
+      - WHATSAPP_AUTH_TOKEN=${WHATSAPP_AUTH_TOKEN}
+      - WHATSAPP_FROM_NUMBER=${WHATSAPP_FROM_NUMBER}
+      - INSTAGRAM_PAGE_ACCESS_TOKEN=${INSTAGRAM_PAGE_ACCESS_TOKEN}
+      - INSTAGRAM_APP_SECRET=${INSTAGRAM_APP_SECRET}
+      - INSTAGRAM_VERIFY_TOKEN=${INSTAGRAM_VERIFY_TOKEN}
+      - PYTHONUNBUFFERED=1
+      - SERVICE_ACCOUNT_JSON_PATH=/app/service_account.json
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/service_account.json
+    volumes:
+      # Mount Google service account credentials
+      - ./service_account.json:/app/service_account.json:ro
+      # Mount .env file for configuration
+      - ./.env:/app/.env:ro
+      # Mount logs directory for persistence
+      - ./logs:/app/logs
+    # Automatically restart on failure
+    restart: unless-stopped
+    # Health check (customize based on your bot's API)
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      - db
+    networks:
+      - vita_network
+
+  # PostgreSQL Database (if needed for conversation persistence)
+  db:
+    image: postgres:15-alpine
+    container_name: vita-db
+    environment:
+      POSTGRES_DB: ${DB_NAME:-vita_db}
+      POSTGRES_USER: ${DB_USER:-vita_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-vita_password}
+    volumes:
+      # Persist database data
+      - db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-vita_user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vita_network
+
+  # Optional Redis Service (for distributed conversation caching)
+  # Uncomment to enable Redis support for conversation state scaling
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: vita-redis
+  #   volumes:
+  #     - redis_data:/data
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   networks:
+  #     - vita_network
+
+volumes:
+  db_data:
+    driver: local
+  # redis_data:
+  #   driver: local
+
+networks:
+  vita_network:
+    driver: bridge
