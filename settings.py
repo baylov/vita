@@ -29,6 +29,17 @@ class Settings(BaseSettings):
     )
     digest_schedule_hour: int = int(os.getenv("DIGEST_SCHEDULE_HOUR", "8"))
     digest_schedule_minute: int = int(os.getenv("DIGEST_SCHEDULE_MINUTE", "0"))
+    admin_ids: list[int] = []
+
+    def __init__(self, **data):
+        super().__init__(**data)
+        # Parse ADMIN_IDS from environment
+        admin_ids_str = os.getenv("ADMIN_IDS", "")
+        if admin_ids_str:
+            try:
+                self.admin_ids = [int(id_str.strip()) for id_str in admin_ids_str.split(",")]
+            except ValueError:
+                self.admin_ids = []
 
 
 settings = Settings()
