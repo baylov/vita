@@ -9,7 +9,14 @@ from data.models import (
     UserSession,
     AdminLog,
 )
-from data.repositories import SpecialistRepository, ScheduleRepository
+from data.repositories import (
+    AdminLogRepository,
+    BookingRepository,
+    DayOffRepository,
+    ScheduleRepository,
+    SpecialistRepository,
+    UserSessionRepository,
+)
 
 __all__ = [
     "Base",
@@ -23,4 +30,8 @@ __all__ = [
     "AdminLog",
     "SpecialistRepository",
     "ScheduleRepository",
+    "BookingRepository",
+    "DayOffRepository",
+    "UserSessionRepository",
+    "AdminLogRepository",
 ]
