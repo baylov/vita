@@ -135,6 +135,10 @@ service_account.json
 # Allow locale files
 !locales/*.json
 
+# Logs (but keep the directory)
+/logs/*
+!/logs/.gitkeep
+
 # OS
 .DS_Store
 Thumbs.db
