@@ -11,6 +11,9 @@ class Settings(BaseSettings):
 
     model_config = ConfigDict(env_file=".env", case_sensitive=False, extra='allow')
 
+    # Database
+    database_url: str = "sqlite:///./vitaplus.db"
+    
     service_account_json_path: str = "service_account.json"
     google_sheets_id: Optional[str] = None
     gemini_api_key: Optional[str] = None
